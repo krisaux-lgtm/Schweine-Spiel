@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="de"><head><meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
 <title>Matschschweine</title>
 <style>
 :root{--ink:#fff;--panel:rgba(25,8,12,.72);--accent:#d23a32;color-scheme:light dark}
@@ -37,6 +37,19 @@ canvas{display:block;position:fixed;inset:0}
 .si{display:flex;gap:10px;align-items:center;justify-content:space-between;background:rgba(255,255,255,.12);border-radius:14px;padding:10px 14px;width:min(560px,92vw);text-align:left}.si b{display:block}.si small{opacity:.8}.si button{min-width:110px;min-height:48px;border:0;border-radius:12px;background:var(--accent);color:#fff;font-size:16px;font-weight:700}.si button:disabled{opacity:.4}
 #ib,#rob{display:none;position:fixed;right:320px;width:90px;height:90px;border-radius:50%;border:3px solid rgba(255,255,255,.3);background:var(--panel);color:#fff;font-size:14px;font-weight:700}#ib{bottom:calc(24px + env(safe-area-inset-bottom,0px))}#rob{bottom:calc(124px + env(safe-area-inset-bottom,0px))}
 </style></head><body>
+<script>
+// Verhindert den Safari-Doppeltipp-Zoom auf Touch-Geräten.
+(function(){
+  let lastTouchEnd = 0;
+  document.addEventListener('touchend', function(event){
+    const target = event.target;
+    if (target && target.closest && target.closest('button, a, input, select, textarea')) return;
+    const now = Date.now();
+    if (now - lastTouchEnd <= 350) event.preventDefault();
+    lastTouchEnd = now;
+  }, { passive: false });
+})();
+</script>
 <div id="hud" class="p"><b id="nm">Schwein</b> · Leben <span id="pc">100</span><div id="bar"><div id="fill"></div></div><small>Lv <span id="lv">1</span><br>Besiegt <span id="vs">0</span> · 💰 <span id="co">0</span><br>Waffe: <b id="wp">Biss</b><br><span id="tot"></span></small><br><button id="shb" class="card" style="width:auto;min-height:44px;padding:8px 14px;margin-top:6px">🛒 Shop (B)</button></div>
 <div id="hint" class="p">WASD: laufen · <b>F: angreifen</b><br>1–9: Waffe wechseln · Esc: Pause<br>Tag: Höhlen erkunden · Nacht: überleben<br>Blutmatsch heilt</div>
 <div id="toast" class="p"></div>
